@@ -37,6 +37,7 @@ genArrayUniqueNumbers (pcRandomNumber, 16, 100, 1);
 console.log(pcRandomNumber);
 
 /* Soluzione 2 - cilco while */ 
+//1. Il computer deve generare 16 numeri casuali tra 1 e 100.
 
 min = 1;
 max = 100;
@@ -45,19 +46,25 @@ while (pcRandomNumber.length < maxEstrazioni) {
   min = Math.ceil(min);
   max = Math.floor(max);
   var  randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+
+  //2. I numeri non possono essere duplicati
   if (pcRandomNumber.indexOf(randomNumber) < 0) {
     pcRandomNumber.push(randomNumber);
   }
   console.log(pcRandomNumber);
 }
-
-/*
+//funzionamento verificato
+//3. In seguito deve chiedere all’utente (100 - 16) volte di inserire un numero alla volta, sempre compreso tra 1 e 100.
+//4. L’utente non può inserire più volte lo stesso numero.
 var userArrayNumber =[];
-var chiediNumero = parseInt(prompt("Dammi"))
+var userNumber;
+var info = alert("Ti chiederò di inserire 16 numeri univoci da 1 a 100 - accettero solo numeri univoci senza ripetizioni o non potrai proseguire");
 
-for (let index = 0; index < array.length; index++) {
 
-  const element = array[index];
-  
-}
-*/
+do {
+  userNumber = parseInt(prompt("Dammi un numero compreso tra 1 e 100"));
+  if (userArrayNumber.indexOf(userNumber) < 0 && 100 >= userNumber >= 1) {
+    userArrayNumber.push(userNumber);
+  }
+} while (userArrayNumber.length < maxEstrazioni);
+console.log(userArrayNumber);
