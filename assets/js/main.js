@@ -63,7 +63,7 @@ var info = alert("Ti chiederò di inserire 16 numeri univoci da 1 a 100 - accett
 
 do {
   userNumber = parseInt(prompt("Dammi un numero compreso tra 1 e 100"));
-  if (userArrayNumber.indexOf(userNumber) < 0 && 100 >= userNumber >= 1) {
+  if (userArrayNumber.indexOf(userNumber) < 0 && max >= userNumber >= min) {
     userArrayNumber.push(userNumber);
   }
 } while (userArrayNumber.length < maxEstrazioni);
