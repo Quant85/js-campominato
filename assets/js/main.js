@@ -11,8 +11,7 @@
 //1. Il computer deve generare 16 numeri casuali tra 1 e 100.
 
 var pcRandomNumber =[];
-var min;
-var max;
+var min, max;
 
 /* Soluzione 1 - cilco di funzione */ 
 //generare una funzione anonima ed associarla ad una variabile, cio mi permette di richiamarla all'inteno della funzione stessa e farla ciclare fino a che la lunghezza dell'array generato non è maggiore del parametro max designato pari al numero di oggetti da far contenere all'arrey
@@ -34,8 +33,8 @@ var genArrayUniqueNumbers = function (arr,estrazioni,max,min) {
 
 //genero tanti pescaggi random ma valido solo quelli che rispettano la condizione di univocità
 genArrayUniqueNumbers (pcRandomNumber, 16, 100, 1);
-console.log(pcRandomNumber);
-
+console.log(pcRandomNumber);  con l'impiego di funzioni di questo tipo potrei creare pezzi di codice riutilizzabile - funzioni da implementare nelle successive fasi
+*/
 /* Soluzione 2 - cilco while */ 
 //1. Il computer deve generare 16 numeri casuali tra 1 e 100.
 
@@ -57,24 +56,45 @@ while (pcRandomNumber.length < maxEstrazioni) {
 //3. In seguito deve chiedere all’utente (100 - 16) volte di inserire un numero alla volta, sempre compreso tra 1 e 100.
 //4. L’utente non può inserire più volte lo stesso numero.
 var userArrayNumber =[];
-var userNumber;
-var info;
-info = alert("Ti chiederò di inserire un numero " +  "da " + min + " a " + max + ". Hai massimo " + maxEstrazioni + " possimilità per indovinare i numeri random univoci generati dal pc. Attento accettero solo valori numerici univoci, senza ripetizion In caso contrario potrai proseguire/perderai per inosservanza delle regole");
+var userNumber, info, check, valoreTrovato, finePartitaRisultato, valoriPc, valoriUser;
 
+info = alert("Ti chiederò di inserire un numero " +  "da " + min + " a " + max + ". Hai massimo " + maxEstrazioni + " possimilità per indovinare uno tra i " + maxEstrazioni + " numeri random univoci generati dal pc. Attento accetterò solo valori numerici univoci, senza ripetizioni. In caso contrario perderai per inosservanza delle regole");
 
+//5. L’utente non può inserire più volte lo stesso numero.
+check = 0;
+valoreTrovato = false;
+//6.1 Se il numero è presente nella lista dei numeri generati, la partita termina
 do {
   userNumber = parseInt(prompt("Inserisci un numero "));
+  
   if (userArrayNumber.indexOf(userNumber) < 0 && max >= userNumber >= min) {
     userArrayNumber.push(userNumber);
+    check +=  1;
+    console.log(check);
   } else {
+    //6.3 La partita termina quando il giocatore inserisce un numero “vietato” 
     alert("Non hai rispettato le regole - hai perso"); //se non inserisco else - all'utente verrà riproposta di continuo la finestra per l'inserimento di un valore valido sino a che non inserirà valori idonei
     break;
   }
 
-} while (userArrayNumber.length < maxEstrazioni);
+  //6.3 altrimenti si continua chiedendo all’utente un altro numero.
+
+  for (let j = 0; j < pcRandomNumber.length; j++) {
+    if (userNumber == pcRandomNumber[j] ) {
+      alert("Complimenti " + userNumber + " è presente nella lista dei numeri generati dal pc");
+      valoreTrovato = true;
+      //check +=  1;
+      //console.log(check); inserendo in questa posizione ed eliminando il break consento alla partita di continuare e posso restituire il numero di volte che l'utente ha indovinato complessivamente fornendo 16 numeri idonei totali
+    }
+  
+  }
+
+  // 6.4 La partita termina quando il giocatoreo raggiunge il numero massimo possibile di numeri consentiti.
+} while (userArrayNumber.length < maxEstrazioni && valoreTrovato == false);
 console.log(userArrayNumber);
 
-//L’utente non può inserire più volte lo stesso numero.
-//Se il numero è presente nella lista dei numeri generati, la partita termina, altrimenti si continua chiedendo all’utente un altro numero.
-//La partita termina quando il giocatore inserisce un numero “vietato” o raggiunge il numero massimo possibile di numeri consentiti.
-//Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito.
+//7. Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito. 
+var finePartitaRisultato = alert("Oltre ad aver beccato uno dei valori generati dal pc, sei riuscito a terminare la partita senza infrangere le regole  ed il numero di valori idonei che hai inserito è: " + check + ". Ora ti mostrerò i valori che hai inseriro e quelli generati dal pc: ");
+
+valoriPc = alert(" Questi sono i valori random univoci che ha generato il pc: " + pcRandomNumber);
+valoriUser = alert(" Questi sono i valori che hai fornito: " + userArrayNumber);
