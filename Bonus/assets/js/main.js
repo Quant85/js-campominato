@@ -35,12 +35,43 @@ var genArrayUniqueNumbers = function (arr,estrazioni,max,min) {
 genArrayUniqueNumbers (pcRandomNumber, 16, 100, 1);
 console.log(pcRandomNumber);  con l'impiego di funzioni di questo tipo potrei creare pezzi di codice riutilizzabile - funzioni da implementare nelle successive fasi
 */
+//BONUS - Implementazione sistemi Livello - 
+/*
+//All’inizio il software richiede anche una difficoltà all’utente che cambia il range di numeri casuali:
+con difficoltà 0 => tra 1 e 100
+con difficoltà 1 =>  tra 1 e 80
+con difficoltà 2 => tra 1 e 50 */
+var infoLivello, livelloSelezionato, min, max, maxEstrazioni, goGame;
+
+infoLivello = alert("Ci sono vari livelli che puoi affrontare, ed ogni livello cambia il range di valori potenzialmente estratti dal pc. Difficoltà 0 => tra 1 e 100 - Difficoltà 1 =>  tra 1 e 80 - Difficoltà 2 => tra 1 e 50.");
+
+livelloSelezionato = Number(prompt("Che livello di difficoltà desideri? [0] [1] o [2]"));
+console.log(livelloSelezionato);
+switch (livelloSelezionato) {
+  case 0:
+    min = 1;
+    max = 100;
+    console.log(min, max);
+    break;
+  case 1:
+    min = 1;
+    max = 80;
+    console.log(min, max);
+    break;
+  case 2:
+    min = 1;
+    max = 50;
+    console.log(min, max);
+    break;
+  default:
+    alert("Non hai correttamente selezionato il livello");
+    goGame = false;
+}
+
+
 /* Soluzione 2 - cilco while */ 
 //1. Il computer deve generare 16 numeri casuali tra 1 e 100.
 var pcRandomNumber =[];
-var min, max;
-min = 1;
-max = 100;
 maxEstrazioni = 16;
 while (pcRandomNumber.length < maxEstrazioni) {
   min = Math.ceil(min);
