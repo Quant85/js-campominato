@@ -58,13 +58,23 @@ while (pcRandomNumber.length < maxEstrazioni) {
 //4. L’utente non può inserire più volte lo stesso numero.
 var userArrayNumber =[];
 var userNumber;
-var info = alert("Ti chiederò di inserire 16 numeri univoci da 1 a 100 - accettero solo numeri univoci senza ripetizioni o non potrai proseguire");
+var info;
+info = alert("Ti chiederò di inserire un numero " +  "da " + min + " a " + max + ". Hai massimo " + maxEstrazioni + " possimilità per indovinare i numeri random univoci generati dal pc. Attento accettero solo valori numerici univoci, senza ripetizion In caso contrario potrai proseguire/perderai per inosservanza delle regole");
 
 
 do {
-  userNumber = parseInt(prompt("Dammi un numero compreso tra 1 e 100"));
+  userNumber = parseInt(prompt("Inserisci un numero "));
   if (userArrayNumber.indexOf(userNumber) < 0 && max >= userNumber >= min) {
     userArrayNumber.push(userNumber);
+  } else {
+    alert("Non hai rispettato le regole - hai perso"); //se non inserisco else - all'utente verrà riproposta di continuo la finestra per l'inserimento di un valore valido sino a che non inserirà valori idonei
+    break;
   }
+
 } while (userArrayNumber.length < maxEstrazioni);
 console.log(userArrayNumber);
+
+//L’utente non può inserire più volte lo stesso numero.
+//Se il numero è presente nella lista dei numeri generati, la partita termina, altrimenti si continua chiedendo all’utente un altro numero.
+//La partita termina quando il giocatore inserisce un numero “vietato” o raggiunge il numero massimo possibile di numeri consentiti.
+//Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito.
