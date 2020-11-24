@@ -17,7 +17,7 @@ con difficoltà 2 => tra 1 e 50 */
 var infoLivello, livelloSelezionato, min, max, maxEstrazioni, goGame, randomNumber, userNumber, info, check, youLose , valoriPc, valoriUser;
 var arrayBombe =[];
 var userArrayNumber =[];
-maxEstrazioni = 5;
+maxEstrazioni = 16;
 /**
  * Questa funzione permette di generare un numero random compreso in un intervallo definito tra due numeri interi, min e max
  * @param {int} min 
@@ -107,7 +107,7 @@ if (goGame) {
     console.log(userArrayNumber.length);
     console.log(arrayBombe.length);
     
-    if (arrayChecked(userArrayNumber, userNumber) < 0 && max >= userNumber >= min) {
+    if (arrayChecked(userArrayNumber, userNumber) < 0 && max >= userNumber && min <= userNumber ) {
       userArrayNumber.push(userNumber);
       console.log(arrayChecked(userArrayNumber, userNumber));
       check +=  1;
