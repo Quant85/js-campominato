@@ -15,6 +15,32 @@ con difficoltà 0 => tra 1 e 100
 con difficoltà 1 =>  tra 1 e 80
 con difficoltà 2 => tra 1 e 50 */
 var infoLivello, livelloSelezionato, min, max, maxEstrazioni, goGame;
+var arrayBombe =[];
+maxEstrazioni = 16;
+var randomNumber;
+/**
+ * Questa funzione permette di generare un numero random compreso in un intervallo definito tra due numeri interi, min e max
+ * @param {int} min 
+ * @param {*} max 
+ */
+
+function getRandomNumber(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function arrayChecked(arr, getNumber) {
+  var i = 0;
+  for (;i < arr.length; i++) {
+    if (getNumber === arr[i]) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 
 infoLivello = alert("Ci sono vari livelli che puoi affrontare, ed ogni livello cambia il range di valori potenzialmente estratti dal pc. Difficoltà 0 => tra 1 e 100 - Difficoltà 1 =>  tra 1 e 80 - Difficoltà 2 => tra 1 e 50.");
 
@@ -46,49 +72,51 @@ console.log(goGame);
 if (goGame) {
   /* Soluzione 2 - cilco while */ 
   //1. Il computer deve generare 16 numeri casuali tra 1 e 100.
-  var pcRandomNumber =[];
-  maxEstrazioni = 16;
-  while (pcRandomNumber.length < maxEstrazioni) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    var  randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+  
+  while (arrayBombe.length < maxEstrazioni) {
+    randomNumber = getRandomNumber(min, max);
 
     //2. I numeri non possono essere duplicati
-    if (pcRandomNumber.indexOf(randomNumber) < 0) {
-      pcRandomNumber.push(randomNumber);
+    if (arrayChecked(arrayBombe, randomNumber) < 0) {
+      arrayBombe.push(randomNumber);
     }
-    console.log(pcRandomNumber);
   }
+  console.log(arrayBombe);
+  console.log(arrayChecked(arrayBombe, randomNumber));
+  
   //funzionamento verificato
   //3. In seguito deve chiedere all’utente (100 - 16) volte di inserire un numero alla volta, sempre compreso tra 1 e 100.
   //4. L’utente non può inserire più volte lo stesso numero.
   var userArrayNumber =[];
-  var userNumber, info, check, valoreTrovato, finePartitaRisultato, valoriPc, valoriUser;
+  var userNumber, info, check, valoreTrovato, youLose , valoriPc, valoriUser;
 
-  info = alert("Ti chiederò di inserire un numero " +  "da " + min + " a " + max + ". Hai massimo " + maxEstrazioni + " possimilità per indovinare uno tra i " + maxEstrazioni + " numeri random univoci generati dal pc. Attento accetterò solo valori numerici univoci, senza ripetizioni. In caso contrario perderai per inosservanza delle regole");
+  info = alert("Ti chiederò di inserire un numero " +  "da " + min + " a " + max + ". Attento ci sono " + maxEstrazioni + " 💣 disseminate, associate a " + maxEstrazioni + " numeri random univoci generati dal pc. ❗❗❗  Accetterò solo valori numerici univoci, senza ripetizioni❗❗❗ . Buona fortuna e che la Forza 🍀 sia con TE 💪");
 
   //5. L’utente non può inserire più volte lo stesso numero.
   check = -1;
   valoreTrovato = false;
   //6.1 Se il numero è presente nella lista dei numeri generati, la partita termina
-  while (userArrayNumber.length < (max - maxEstrazioni)  && valoreTrovato == false) {
+  while (userArrayNumber.length < (max - maxEstrazioni)  && valoreTrovato == false && userArrayNumber.length !== arrayBombe.length) {
     userNumber = parseInt(prompt("Inserisci un numero "));
+    console.log(userArrayNumber.length);
+    console.log(arrayBombe.length);
     
-    if (userArrayNumber.indexOf(userNumber) < 0 && max >= userNumber >= min) {
+    if (arrayChecked(userArrayNumber, userNumber) < 0 && max >= userNumber >= min) {
       userArrayNumber.push(userNumber);
+      console.log(arrayChecked(userArrayNumber, userNumber));
       check +=  1;
       console.log(check);
     } else {
       //6.3 La partita termina quando il giocatore inserisce un numero “vietato” 
-      alert("Non hai rispettato le regole - hai perso"); //se non inserisco else - all'utente verrà riproposta di continuo la finestra per l'inserimento di un valore valido sino a che non inserirà valori idonei
-      break;
+      alert("Non hai inserito un valore valido, premi ok e riprova");
+       //se non inserisco else - all'utente verrà riproposta di continuo la finestra per l'inserimento di un valore valido sino a che non inserirà valori idonei
     }
 
     //6.3 altrimenti si continua chiedendo all’utente un altro numero.
 
-    for (let j = 0; j < pcRandomNumber.length; j++) {
-      if (userNumber == pcRandomNumber[j] ) {
-        alert("Complimenti " + userNumber + " è presente nella lista dei numeri generati dal pc");
+    for (let j = 0; j < arrayBombe.length; j++) {
+      if (userNumber == arrayBombe[j] ) {
+        alert("💥 " + userNumber + " è una 💣");
         valoreTrovato = true;
         //check +=  1;
         //console.log(check); inserendo in questa posizione ed eliminando il break consento alla partita di continuare e posso restituire il numero di volte che l'utente ha indovinato complessivamente fornendo 16 numeri idonei totali
@@ -101,9 +129,13 @@ if (goGame) {
   console.log(userArrayNumber);
 
   //7. Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito. 
-  finePartitaRisultato = alert("Oltre ad aver beccato uno dei valori generati dal pc, sei riuscito a terminare la partita senza infrangere le regole  ed il numero di valori idonei che hai inserito è: " + check + ". Ora ti mostrerò i valori che hai inseriro e quelli generati dal pc: ");
+  if (check == maxEstrazioni) {
+    youWin = alert("Complimenti 🎉🎉🎉 Hai Vinto 🎉🎉🎉, hai evitato tutte le " + maxEstrazioni + " 💣");
+  } else if (check !== maxEstrazioni) {
+    youLose = alert("💥💥 Game Over 💥💥 - Il numero di valori idonei che hai inserito è: " + check + ". Ora ti mostrerò i valori che hai inseriro e quelli generati dal pc: ");
+  }
 
-  valoriPc = alert(" Questi sono i valori random univoci che ha generato il pc: " + pcRandomNumber);
+  valoriPc = alert(" Questi sono i valori random univoci che ha generato il pc: " + arrayBombe);
   valoriUser = alert(" Questi sono i valori che hai fornito: " + userArrayNumber);
 
 } else  {
