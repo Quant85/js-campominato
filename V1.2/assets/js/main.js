@@ -14,17 +14,16 @@
 con difficoltà 0 => tra 1 e 100
 con difficoltà 1 =>  tra 1 e 80
 con difficoltà 2 => tra 1 e 50 */
-var infoLivello, livelloSelezionato, min, max, maxEstrazioni, goGame, randomNumber, userNumber, info, check, youLose , valoriPc, valoriUser;
+var infoLivello, livelloSelezionato, min, max, getBombe, goGame, randomNumber, userNumber, info, check, youLose, stringUser, stringBomb, valoriPc, valoriUser;
 var arrayBombe =[];
 var userArrayNumber =[];
-maxEstrazioni = 16;
+getBombe = 16;
 /**
  * Questa funzione permette di generare un numero random compreso in un intervallo definito tra due numeri interi, min e max
  * @param {int} min 
  * @param {*} max 
  * @returns {int} numero random tra min e max estremi compresi
  */
-
 function getRandomNumber(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -108,7 +107,7 @@ if (goGame) {
   /* Soluzione 2 - cilco while */ 
   //1. Il computer deve generare 16 numeri casuali tra 1 e 100.
   
-  while (arrayBombe.length < maxEstrazioni) {
+  while (arrayBombe.length < getBombe) {
     randomNumber = getRandomNumber(min, max);
 
     //2. I numeri non possono essere duplicati
@@ -123,12 +122,12 @@ if (goGame) {
   //3. In seguito deve chiedere all’utente (100 - 16) volte di inserire un numero alla volta, sempre compreso tra 1 e 100.
   //4. L’utente non può inserire più volte lo stesso numero.
 
-  info = alert("Ti chiederò di inserire un numero " +  "da " + min + " a " + max + ". Attento ci sono " + maxEstrazioni + " 💣 disseminate, associate a " + maxEstrazioni + " numeri random univoci generati dal pc. ❗❗❗  Accetterò solo valori numerici univoci, senza ripetizioni❗❗❗ . Buona fortuna e che la Forza 🍀 sia con TE 💪");
+  info = alert("Ti chiederò di inserire un numero " +  "da " + min + " a " + max + ". Attento ci sono " + getBombe + " 💣 disseminate, associate a " + getBombe + " numeri random univoci generati dal pc. ❗❗❗  Accetterò solo valori numerici univoci, senza ripetizioni❗❗❗ . Buona fortuna e che la Forza 🍀 sia con TE 💪");
 
   //5. L’utente non può inserire più volte lo stesso numero.
   check = -1;
   //6.1 Se il numero è presente nella lista dei numeri generati, la partita termina
-  while ((userArrayNumber.length < (max - maxEstrazioni))  && (bombUserChecked(arrayBombe, userNumber) == false) && (userArrayNumber.length !== arrayBombe.length)) {
+  while ((userArrayNumber.length < (max - getBombe))  && (bombUserChecked(arrayBombe, userNumber) == false) && (userArrayNumber.length !== (max - getBombe))) {
     userNumber = parseInt(prompt("Inserisci un numero "));
     console.log(userArrayNumber.length);
     console.log(arrayBombe.length);
@@ -154,14 +153,27 @@ if (goGame) {
   console.log(userArrayNumber);
 
   //7. Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito. 
-  if (arrayBombe.length == userArrayNumber.length) {
-    youWin = alert("Complimenti 🎉🎉🎉 Hai Vinto 🎉🎉🎉, hai evitato tutte le " + maxEstrazioni + " 💣");
-  } else if (arrayBombe.length !== userArrayNumber.length) {
+  /*
+  //.sort() effettua il riordinamento alfabetico, ma l'obbiettivo è quello di avere quello numerico. 
+  // Per ordina i numeri nella matrice in ordine crescente possiamo inserire come attributi del metodo .sort() una "compareFunction"
+  // "compareFunction" è una funzione che definisce un ordinamento alternativo. La funzione dovrebbe restituire un valore negativo, zero o positivo, a seconda degli argomenti,
+  //Quando il metodo sort () confronta due valori, invia i valori alla funzione di confronto e ordina i valori in base al valore restituito (negativo, zero, positivo).
+  // Quindi usando come parametro -  function(a, b){return a-b} - Il primo elemento dell'array (arr[0]) è ora il valore più basso e cosi via
+  */
+
+  stringBomb = arrayBombe.sort(function(a, b){return a-b;}).join(" 💣");
+  console.log(stringBomb);
+  stringUser = userArrayNumber.sort(function(a, b){return a-b;}).join(" 🗽");
+
+
+  if ((max - getBombe) == userArrayNumber.length) {
+    youWin = alert("Complimenti 🎉🎉🎉 Hai Vinto 🎉🎉🎉, hai evitato tutte le " + getBombe + " 💣." +" Hai inserito " + check + " valori idonei. 🚀");
+  } else if ((max - getBombe) !== userArrayNumber.length) {
     youLose = alert("💥💥 Game Over 💥💥 - Il numero di valori idonei che hai inserito è: " + check + ". Ora ti mostrerò i valori che hai inseriro e quelli generati dal pc: ");
   }
 
-  valoriPc = alert(" Questi sono i valori random univoci che ha generato il pc: " + arrayBombe);
-  valoriUser = alert(" Questi sono i valori che hai fornito: " + userArrayNumber);
+  valoriPc = alert(" Questi sono i valori random univoci che ha generato il pc: " + stringBomb);
+  valoriUser = alert(" Questi sono i valori che hai fornito: " + stringUser);
 
 } else  {
   refresh();
