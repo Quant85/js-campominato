@@ -22,6 +22,7 @@ maxEstrazioni = 16;
  * Questa funzione permette di generare un numero random compreso in un intervallo definito tra due numeri interi, min e max
  * @param {int} min 
  * @param {*} max 
+ * @returns {int} numero random tra min e max estremi compresi
  */
 
 function getRandomNumber(min, max) {
@@ -30,7 +31,16 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-//Due funzioni similari per avere risultati apparentemente differenti - potrei usare il 
+//Due funzioni similari per avere risultati differenti 
+
+/**
+ * Questa funzione effettua in loop un confronto tra gli elementi presenti in un array e l'elemento cercato
+ * se c'è corrispondenza e l'elemento cercato si trova nell'array esso restituisce la sua posizione, altrimenti da come valore -1
+ * @param {*} arr  è un array che può contenere un qualsiasi elemento, nel caso specifico usato come contenitore di numeri
+ * @param {*} getNumber è l'elemento che si confronta e ricerca nell'array  
+ * @returns {i} posizione in cui viene individuata la corrispondenza
+ * @returns {-1} in tutti i casi in cui non c'è corrispondenza
+ */
 function arrayChecked(arr, getNumber) {
   var i = 0;
   for (;i < arr.length; i++) {
@@ -40,6 +50,15 @@ function arrayChecked(arr, getNumber) {
   }
   return -1;
 }
+
+/**
+ * Questa funzione effettua in loop un confronto tra gli elementi presenti in un array e l'elemento cercato
+ * se c'è corrispondenza e l'elemento cercato si trova nell'array esso restituisce il booleano true, altrimenti false;
+ * @param {*} arr  è un array che può contenere un qualsiasi elemento, nel caso specifico usato come contenitore di numeri
+ * @param {*} userNumber è l'elemento che si confronta e ricerca nell'array, nel caso specifico il valore fornito dall'utente
+ * @returns {true} corrispondenza trovata
+ * @returns {false} corrispondenza non trovata
+ */
 function bombUserChecked(arr, userNumber) {
   for (let j = 0; j < arr.length; j++) {
     if (userNumber == arr[j] ) {
@@ -48,7 +67,14 @@ function bombUserChecked(arr, userNumber) {
   }
   return false;
 }
+//con setTimeout setto dopo quanto tempo voglio si attivi una data condizione/funzione - 
+//con la function(){ location.reload();} - vado ad utilizzare il metodo reload(), sul document, in modo da ricaricare la paggina, come farebbe un reload button
 
+function refresh() {    
+    setTimeout(function () {
+        location.reload();
+    }, 100);
+}
 infoLivello = alert("Ci sono vari livelli che puoi affrontare, ed ogni livello cambia il range di valori potenzialmente estratti dal pc. Difficoltà 0 => tra 1 e 100 - Difficoltà 1 =>  tra 1 e 80 - Difficoltà 2 => tra 1 e 50.");
 
 livelloSelezionato = Number(prompt("Che livello di difficoltà desideri? [0] [1] o [2]"));
@@ -119,18 +145,6 @@ if (goGame) {
     }
 
     //6.3 altrimenti si continua chiedendo all’utente un altro numero.
-    /*
-
-    for (let j = 0; j < arrayBombe.length; j++) {
-      if (userNumber == arrayBombe[j] ) {
-        alert("💥 " + userNumber + " è una 💣");
-        valoreTrovato = true;
-        //check +=  1;
-        //console.log(check); inserendo in questa posizione ed eliminando il break consento alla partita di continuare e posso restituire il numero di volte che l'utente ha indovinato complessivamente fornendo 16 numeri idonei totali
-      }
-    
-    } */
-
     if (bombUserChecked(arrayBombe, userNumber)) {
       alert("💥 " + userNumber + " è una 💣");
     }
@@ -152,10 +166,3 @@ if (goGame) {
 } else  {
   refresh();
 }
-
-function refresh() {    
-    setTimeout(function () {
-        location.reload();
-    }, 100);
-}
-
